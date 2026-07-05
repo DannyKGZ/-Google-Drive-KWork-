@@ -129,8 +129,46 @@ function stopPolling() {
   }
 }
 
+function isStaticHosting() {
+  return (
+    location.hostname.endsWith('github.io') ||
+    location.hostname.endsWith('gitlab.io') ||
+    location.protocol === 'file:'
+  );
+}
+
+function getAppsScriptUrl() {
+  return window.SITE_CONFIG?.appsScriptUrl?.trim() || '';
+}
+
+function getApiBaseUrl() {
+  const fromConfig = window.SITE_CONFIG?.apiBaseUrl?.trim();
+  if (fromConfig) return fromConfig.replace(/\/$/, '');
+  if (!isStaticHosting()) return '';
+  return '';
+}
+
+function renderStaticSetupHelp() {
+  return `
+    <div class="works-empty">
+      <p><strong>Нужна настройка для GitHub Pages</strong></p>
+      <p style="color:var(--text-muted); max-width:520px; margin:0 auto 1rem;">
+        На GitHub Pages нет Node-сервера. Подключите Google Apps Script — это займёт 3 минуты:
+      </p>
+      <ol style="text-align:left; max-width:520px; margin:0 auto; color:var(--text-muted);">
+        <li>Откройте <a href="https://script.google.com" target="_blank" rel="noopener">script.google.com</a> → Новый проект</li>
+        <li>Вставьте код из <code>apps-script/Code.gs</code> → Сохранить</li>
+        <li><strong>Deploy → New deployment → Web app</strong></li>
+        <li>Execute as: <strong>Me</strong>, доступ: <strong>Anyone</strong></li>
+        <li>Скопируйте URL и вставьте в <code>public/js/config.js</code> → <code>appsScriptUrl</code></li>
+        <li>Выполните: <code>npm run build:pages</code> → commit → push</li>
+      </ol>
+    </div>
+  `;
+}
+
 async function fetchWorksData() {
-  const appsScriptUrl = window.SITE_CONFIG?.appsScriptUrl?.trim();
+  const appsScriptUrl = getAppsScriptUrl();
 
   if (appsScriptUrl) {
     const response = await fetch(appsScriptUrl, { cache: 'no-store' });
@@ -141,12 +179,33 @@ async function fetchWorksData() {
     return data;
   }
 
-  const response = await fetch('/api/works', { cache: 'no-store' });
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok && !data.error) {
-    throw new Error('Не удалось связаться с сервером');
+  if (isStaticHosting() && !getApiBaseUrl()) {
+    return {
+      configured: false,
+      error: 'Укажите appsScriptUrl в js/config.js для работы на GitHub Pages',
+      files: [],
+    };
   }
-  return data;
+
+  const apiUrl = `${getApiBaseUrl()}/api/works`;
+
+  try {
+    const response = await fetch(apiUrl, { cache: 'no-store' });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok && !data.error) {
+      throw new Error('Не удалось связаться с сервером');
+    }
+    return data;
+  } catch (err) {
+    if (isStaticHosting()) {
+      return {
+        configured: false,
+        error: 'Укажите appsScriptUrl в js/config.js',
+        files: [],
+      };
+    }
+    throw err;
+  }
 }
 
 async function loadWorks({ silent = false } = {}) {
@@ -166,14 +225,13 @@ async function loadWorks({ silent = false } = {}) {
 
       if (!silent) {
         showStatus(data.error, 'info');
-        worksGrid.innerHTML = `
+        worksGrid.innerHTML = isStaticHosting() ? renderStaticSetupHelp() : `
           <div class="works-empty">
-            <p><strong>Настройка Google Drive API</strong></p>
+            <p><strong>Настройка Google Drive</strong></p>
             <ol style="text-align:left; max-width:520px; margin:1rem auto; color:var(--text-muted);">
-              <li><strong>GitHub Pages:</strong> укажите URL Apps Script в <code>public/js/config.js</code></li>
-              <li><strong>Локально:</strong> добавьте ключ в <code>.env</code> и запустите <code>npm start</code></li>
-              <li><strong>Apps Script:</strong> разверните <code>apps-script/Code.gs</code> на <a href="https://script.google.com" target="_blank" rel="noopener">script.google.com</a></li>
-              <li>Deploy → Web app → доступ «Anyone» → скопируйте URL</li>
+              <li>Добавьте <code>GOOGLE_API_KEY</code> в <code>.env</code></li>
+              <li>Запустите <code>npm start</code></li>
+              <li>Откройте адрес из консоли (например http://localhost:3003)</li>
             </ol>
           </div>
         `;
@@ -223,12 +281,18 @@ async function loadWorks({ silent = false } = {}) {
     }
 
     isFirstLoad = false;
-  } catch {
+  } catch (err) {
     updateLiveIndicator(false);
+    stopPolling();
 
     if (!silent) {
-      showStatus('Ошибка сети при загрузке каталога работ.', 'error');
-      worksGrid.innerHTML = `<div class="works-empty"><p>Не удалось связаться с сервером.</p></div>`;
+      if (isStaticHosting()) {
+        showStatus('Для GitHub Pages нужен Google Apps Script (см. инструкцию ниже)', 'info');
+        worksGrid.innerHTML = renderStaticSetupHelp();
+      } else {
+        showStatus('Ошибка сети. Проверьте, что сервер запущен (npm start) и открыт правильный порт.', 'error');
+        worksGrid.innerHTML = `<div class="works-empty"><p>Не удалось связаться с сервером. Запустите <code>npm start</code> и откройте адрес из консоли.</p></div>`;
+      }
     }
   }
 }

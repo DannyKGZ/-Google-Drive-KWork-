@@ -1,5 +1,7 @@
 window.SITE_CONFIG = {
-  // URL Google Apps Script для GitHub Pages (без Node-сервера)
-  // Разверните apps-script/Code.gs и вставьте URL сюда
+  // Вариант 1: Google Apps Script (для GitHub Pages)
   appsScriptUrl: '',
+
+  // Вариант 2: URL бэкенда на Render/Railway (если задеплоен server.js)
+  // apiBaseUrl: 'https://your-app.onrender.com',
 };
