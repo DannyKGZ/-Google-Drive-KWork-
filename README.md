@@ -48,11 +48,27 @@ npm start
 
 Откройте в браузере адрес из консоли, например: http://localhost:3000
 
+## GitHub Pages
+
+1. Разверните `apps-script/Code.gs` и укажите URL в `public/js/config.js` → `appsScriptUrl`
+2. Соберите папку для Pages:
+
+```bash
+npm run build:pages
+```
+
+3. Закоммитьте и запушьте (папка `docs/` попадёт в репозиторий)
+4. На GitHub: **Settings → Pages → Branch: `main` → Folder: `/docs` → Save**
+
+Сайт будет доступен по адресу:
+`https://dannykgz.github.io/-Google-Drive-KWork-/`
+
 ## Структура
 
 ```
-├── public/           # фронтенд
-├── server.js         # сервер и API
+├── public/           # исходники фронтенда
+├── docs/             # сборка для GitHub Pages (генерируется)
+├── server.js         # сервер и API (локально / Render)
 ├── apps-script/      # скрипт для Google Apps Script
 ├── .env.example      # пример конфигурации
 └── package.json
