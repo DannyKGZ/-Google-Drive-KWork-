@@ -1,0 +1,52 @@
+{
+  "configured": true,
+  "source": "drive-api",
+  "folderId": "15wuHWn4jrLgd7cfCf1JL5h9Qhu3EIGb6",
+  "updatedAt": "2026-07-05T11:14:46.054Z",
+  "files": [
+    {
+      "id": "1sv1IDoPVydB38NziVTo3LAIE21KK2WbQ",
+      "name": "1.pdf",
+      "fileName": "1.pdf",
+      "mimeType": "application/pdf",
+      "size": "0 B",
+      "modifiedTime": "2026-07-05T10:29:50.000Z",
+      "downloadUrl": "https://drive.google.com/uc?export=download&id=1sv1IDoPVydB38NziVTo3LAIE21KK2WbQ",
+      "previewUrl": "https://drive.google.com/file/d/1sv1IDoPVydB38NziVTo3LAIE21KK2WbQ/preview",
+      "webViewLink": "https://drive.google.com/file/d/1sv1IDoPVydB38NziVTo3LAIE21KK2WbQ/view?usp=drivesdk"
+    },
+    {
+      "id": "1VNjLGYIG6PnC8e9Dug0i-NOntMY_sLSM",
+      "name": "2.pdf",
+      "fileName": "2.pdf",
+      "mimeType": "application/pdf",
+      "size": "0 B",
+      "modifiedTime": "2026-07-05T10:29:50.000Z",
+      "downloadUrl": "https://drive.google.com/uc?export=download&id=1VNjLGYIG6PnC8e9Dug0i-NOntMY_sLSM",
+      "previewUrl": "https://drive.google.com/file/d/1VNjLGYIG6PnC8e9Dug0i-NOntMY_sLSM/preview",
+      "webViewLink": "https://drive.google.com/file/d/1VNjLGYIG6PnC8e9Dug0i-NOntMY_sLSM/view?usp=drivesdk"
+    },
+    {
+      "id": "1QF8nb0t5BNZcnGwqV93VayIGqYs-Wmz1",
+      "name": "Рысбеков Руслан Замирович.pdf",
+      "fileName": "Рысбеков Руслан Замирович.pdf",
+      "mimeType": "application/pdf",
+      "size": "45.0 KB",
+      "modifiedTime": "2026-07-01T16:02:53.000Z",
+      "downloadUrl": "https://drive.google.com/uc?export=download&id=1QF8nb0t5BNZcnGwqV93VayIGqYs-Wmz1",
+      "previewUrl": "https://drive.google.com/file/d/1QF8nb0t5BNZcnGwqV93VayIGqYs-Wmz1/preview",
+      "webViewLink": "https://drive.google.com/file/d/1QF8nb0t5BNZcnGwqV93VayIGqYs-Wmz1/view?usp=drivesdk"
+    },
+    {
+      "id": "1fPKadOG1E5SjzRff28zEIsWwVTkCRmq9",
+      "name": "vzrk.ru - убрать дубль страниц.docx",
+      "fileName": "vzrk.ru - убрать дубль страниц.docx",
+      "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "size": "1.3 MB",
+      "modifiedTime": "2026-07-01T15:51:06.000Z",
+      "downloadUrl": "https://drive.google.com/uc?export=download&id=1fPKadOG1E5SjzRff28zEIsWwVTkCRmq9",
+      "previewUrl": "https://drive.google.com/file/d/1fPKadOG1E5SjzRff28zEIsWwVTkCRmq9/preview",
+      "webViewLink": "https://docs.google.com/document/d/1fPKadOG1E5SjzRff28zEIsWwVTkCRmq9/edit?usp=drivesdk&rtpof=true&sd=true"
+    }
+  ]
+}

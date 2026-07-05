@@ -50,18 +50,30 @@ npm start
 
 ## GitHub Pages
 
-1. Разверните `apps-script/Code.gs` и укажите URL в `public/js/config.js` → `appsScriptUrl`
-2. Соберите папку для Pages:
+Сайт: https://dannykgz.github.io/-Google-Drive-KWork-/
+
+На Pages нет Node-сервера — каталог файлов хранится в `data/files.json` и обновляется автоматически.
+
+### Настройка (один раз)
+
+1. GitHub → **Settings → Secrets and variables → Actions**
+2. Добавьте секреты:
+   - `GOOGLE_API_KEY` — API-ключ Google Drive
+   - `GOOGLE_DRIVE_FOLDER_ID` — ID папки (`15wuHWn4jrLgd7cfCf1JL5h9Qhu3EIGb6`)
+3. **Settings → Pages** → Branch: `main`, Folder: `/docs`
+4. Вкладка **Actions** → workflow **Update Drive catalog** → **Run workflow**
+
+Workflow обновляет каталог каждые 5 минут и при каждом push в код.
+
+### Локальная сборка для Pages
 
 ```bash
+npm run fetch:drive
 npm run build:pages
+git add docs/ public/data/
+git commit -m "Update catalog"
+git push
 ```
-
-3. Закоммитьте и запушьте (папка `docs/` попадёт в репозиторий)
-4. На GitHub: **Settings → Pages → Branch: `main` → Folder: `/docs` → Save**
-
-Сайт будет доступен по адресу:
-`https://dannykgz.github.io/-Google-Drive-KWork-/`
 
 ## Структура
 

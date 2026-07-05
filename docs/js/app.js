@@ -148,23 +148,44 @@ function getApiBaseUrl() {
   return '';
 }
 
+function getDataJsonUrl() {
+  return new URL('data/files.json', window.location.href).href;
+}
+
 function renderStaticSetupHelp() {
   return `
     <div class="works-empty">
-      <p><strong>Нужна настройка для GitHub Pages</strong></p>
-      <p style="color:var(--text-muted); max-width:520px; margin:0 auto 1rem;">
-        На GitHub Pages нет Node-сервера. Подключите Google Apps Script — это займёт 3 минуты:
+      <p><strong>Каталог файлов ещё не загружен</strong></p>
+      <p style="color:var(--text-muted); max-width:540px; margin:0 auto 1rem;">
+        Для GitHub Pages добавьте секреты в репозиторий — GitHub Action сам обновит каталог:
       </p>
-      <ol style="text-align:left; max-width:520px; margin:0 auto; color:var(--text-muted);">
-        <li>Откройте <a href="https://script.google.com" target="_blank" rel="noopener">script.google.com</a> → Новый проект</li>
-        <li>Вставьте код из <code>apps-script/Code.gs</code> → Сохранить</li>
-        <li><strong>Deploy → New deployment → Web app</strong></li>
-        <li>Execute as: <strong>Me</strong>, доступ: <strong>Anyone</strong></li>
-        <li>Скопируйте URL и вставьте в <code>public/js/config.js</code> → <code>appsScriptUrl</code></li>
-        <li>Выполните: <code>npm run build:pages</code> → commit → push</li>
+      <ol style="text-align:left; max-width:540px; margin:0 auto; color:var(--text-muted);">
+        <li>GitHub → <strong>Settings → Secrets → Actions</strong></li>
+        <li><code>GOOGLE_API_KEY</code> — ваш API-ключ</li>
+        <li><code>GOOGLE_DRIVE_FOLDER_ID</code> — ID папки Drive</li>
+        <li><strong>Actions</strong> → запустите workflow «Update Drive catalog»</li>
       </ol>
+      <p style="color:var(--text-muted); margin-top:1rem;">
+        Или укажите <code>appsScriptUrl</code> в <code>js/config.js</code> (Google Apps Script).
+      </p>
     </div>
   `;
+}
+
+async function fetchStaticJson() {
+  const response = await fetch(`${getDataJsonUrl()}?t=${Date.now()}`, { cache: 'no-store' });
+  if (!response.ok) return null;
+
+  const data = await response.json().catch(() => null);
+  if (!data || !Array.isArray(data.files)) return null;
+
+  return {
+    configured: true,
+    source: data.source || 'static-json',
+    folderId: data.folderId,
+    updatedAt: data.updatedAt,
+    files: data.files,
+  };
 }
 
 async function fetchWorksData() {
@@ -179,33 +200,30 @@ async function fetchWorksData() {
     return data;
   }
 
-  if (isStaticHosting() && !getApiBaseUrl()) {
+  if (isStaticHosting()) {
+    const staticData = await fetchStaticJson();
+    if (staticData) return staticData;
+
+    const apiBase = getApiBaseUrl();
+    if (apiBase) {
+      const response = await fetch(`${apiBase}/api/works`, { cache: 'no-store' });
+      const data = await response.json().catch(() => ({}));
+      if (response.ok || data.error) return data;
+    }
+
     return {
       configured: false,
-      error: 'Укажите appsScriptUrl в js/config.js для работы на GitHub Pages',
+      error: 'Каталог не найден. Добавьте секреты GOOGLE_API_KEY в GitHub Actions.',
       files: [],
     };
   }
 
-  const apiUrl = `${getApiBaseUrl()}/api/works`;
-
-  try {
-    const response = await fetch(apiUrl, { cache: 'no-store' });
-    const data = await response.json().catch(() => ({}));
-    if (!response.ok && !data.error) {
-      throw new Error('Не удалось связаться с сервером');
-    }
-    return data;
-  } catch (err) {
-    if (isStaticHosting()) {
-      return {
-        configured: false,
-        error: 'Укажите appsScriptUrl в js/config.js',
-        files: [],
-      };
-    }
-    throw err;
+  const response = await fetch('/api/works', { cache: 'no-store' });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok && !data.error) {
+    throw new Error('Не удалось связаться с сервером');
   }
+  return data;
 }
 
 async function loadWorks({ silent = false } = {}) {

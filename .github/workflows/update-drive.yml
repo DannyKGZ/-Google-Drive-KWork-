@@ -1,0 +1,40 @@
+name: Update Drive catalog
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'docs/**'
+  schedule:
+    - cron: '*/5 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - run: npm install
+
+      - name: Fetch files from Google Drive
+        run: node scripts/fetch-drive-json.js
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          GOOGLE_DRIVE_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
+
+      - name: Build docs for GitHub Pages
+        run: npm run build:pages
+
+      - name: Commit updated docs
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: 'Update Drive catalog for GitHub Pages'
+          file_pattern: 'docs/** public/data/files.json'
