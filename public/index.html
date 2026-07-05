@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Портфолио — каталог работ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <header class="header">
+    <div class="container header__inner">
+      <a href="#" class="logo">Portfolio<span>Hub</span></a>
+      <nav class="nav">
+        <a href="#about">О нас</a>
+        <a href="#services">Услуги</a>
+        <a href="#works">Мои работы</a>
+        <a href="#contact">Контакты</a>
+      </nav>
+      <button class="burger" aria-label="Меню" id="burger">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero__grid">
+        <div class="hero__content">
+          <p class="badge">Каталог работ</p>
+          <h1>Документы и материалы для клиентов</h1>
+          <p class="hero__text">
+            Готовые работы собраны в одном месте. Каталог синхронизируется с Google Drive —
+            новые файлы появляются на сайте автоматически.
+          </p>
+          <div class="hero__actions">
+            <a href="#works" class="btn btn--primary">Смотреть работы</a>
+            <a href="#contact" class="btn btn--ghost">Связаться</a>
+          </div>
+        </div>
+        <div class="hero__visual">
+          <div class="hero-card hero-card--1">
+            <span class="hero-card__icon">📄</span>
+            <strong>Файлы</strong>
+            <small>Любые форматы</small>
+          </div>
+          <div class="hero-card hero-card--2">
+            <span class="hero-card__icon">☁️</span>
+            <strong>Drive</strong>
+            <small>Автосинхронизация</small>
+          </div>
+          <div class="hero-card hero-card--3">
+            <span class="hero-card__icon">⬇️</span>
+            <strong>Скачать</strong>
+            <small>Одним кликом</small>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section">
+      <div class="container">
+        <div class="section__head">
+          <h2>О проекте</h2>
+          <p>Платформа для публикации и распространения готовых материалов.</p>
+        </div>
+        <div class="stats">
+          <article class="stat">
+            <strong>150+</strong>
+            <span>документов</span>
+          </article>
+          <article class="stat">
+            <strong>24ч</strong>
+            <span>срок подготовки</span>
+          </article>
+          <article class="stat">
+            <strong>100%</strong>
+            <span>конфиденциальность</span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="section section--alt">
+      <div class="container">
+        <div class="section__head">
+          <h2>Услуги</h2>
+          <p>Выберите нужный тип документа — мы подготовим всё под ваш случай.</p>
+        </div>
+        <div class="cards">
+          <article class="card">
+            <div class="card__icon">📋</div>
+            <h3>Заявления</h3>
+            <p>Жалобы, обращения, ходатайства в государственные органы.</p>
+          </article>
+          <article class="card">
+            <div class="card__icon">🏛️</div>
+            <h3>Справки</h3>
+            <p>Извещения, выписки и официальные уведомления.</p>
+          </article>
+          <article class="card">
+            <div class="card__icon">✍️</div>
+            <h3>Личные документы</h3>
+            <p>Резюме, анкеты, сопроводительные письма и формы.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="works" class="section works">
+      <div class="container">
+        <div class="section__head">
+          <h2>Мои работы</h2>
+          <p>
+            Файлы подгружаются из 
+            <a href="https://drive.google.com/drive/folders/15wuHWn4jrLgd7cfCf1JL5h9Qhu3EIGb6" target="_blank" rel="noopener">Google Drive</a>.
+            Добавили файл в папку — он появится здесь автоматически в течение нескольких секунд.
+          </p>
+        </div>
+
+        <div id="works-status" class="works-status" hidden></div>
+
+        <div id="works-live" class="works-live" hidden>
+          <span class="works-live__dot"></span>
+          <span class="works-live__text">Автообновление каждые 10 сек</span>
+        </div>
+
+        <div id="works-grid" class="works-grid">
+          <div class="works-skeleton" aria-hidden="true"></div>
+          <div class="works-skeleton" aria-hidden="true"></div>
+          <div class="works-skeleton" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="section section--alt">
+      <div class="container contact">
+        <div class="contact__info">
+          <h2>Связаться с нами</h2>
+          <p>Оставьте заявку — ответим в течение рабочего дня.</p>
+          <ul class="contact__list">
+            <li>📧 info@example.com</li>
+            <li>📱 +7 (900) 000-00-00</li>
+            <li>📍 Онлайн</li>
+          </ul>
+        </div>
+        <form class="contact__form" id="contact-form">
+          <input type="text" name="name" placeholder="Ваше имя" required>
+          <input type="email" name="email" placeholder="Email" required>
+          <textarea name="message" rows="4" placeholder="Опишите задачу" required></textarea>
+          <button type="submit" class="btn btn--primary btn--full">Отправить</button>
+          <p class="form-note" id="form-note"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <p>© 2026 PortfolioHub</p>
+      <button type="button" class="btn btn--ghost btn--sm" id="refresh-works">↻ Обновить каталог</button>
+    </div>
+  </footer>
+
+  <script src="/js/file-icons.js"></script>
+  <script src="/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+{
+  "name": "google-drive-kwork",
+  "version": "1.0.0",
+  "description": "Landing page with Google Drive integration for Kwork client",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0"
+  }
+}
