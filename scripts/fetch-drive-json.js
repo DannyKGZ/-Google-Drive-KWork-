@@ -61,14 +61,14 @@ async function fetchDriveFiles() {
 }
 
 async function main() {
-  const outDir = path.join(__dirname, '..', 'public', 'data');
+  const outDir = path.join(__dirname, '..', 'docs', 'data');
   const outFile = path.join(outDir, 'files.json');
 
   try {
     const payload = await fetchDriveFiles();
     fs.mkdirSync(outDir, { recursive: true });
     fs.writeFileSync(outFile, JSON.stringify(payload, null, 2));
-    console.log(`Saved ${payload.files.length} files → public/data/files.json`);
+    console.log(`Saved ${payload.files.length} files → docs/data/files.json`);
   } catch (err) {
     console.error(err.message);
     process.exit(1);

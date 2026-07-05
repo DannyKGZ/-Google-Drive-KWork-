@@ -10,7 +10,7 @@ const RAW_API_KEY = process.env.GOOGLE_API_KEY?.trim();
 const PLACEHOLDER_KEYS = new Set(['', 'your_google_api_key_here', 'YOUR_API_KEY']);
 const API_KEY = RAW_API_KEY && !PLACEHOLDER_KEYS.has(RAW_API_KEY) ? RAW_API_KEY : null;
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'docs')));
 
 function formatFileSize(bytes) {
   if (!bytes) return '—';
@@ -138,7 +138,7 @@ app.get('/api/works', async (_req, res) => {
 });
 
 app.get('*', (_req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  res.sendFile(path.join(__dirname, 'docs', 'index.html'));
 });
 
 function startServer(port, attemptsLeft = 10) {

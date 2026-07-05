@@ -65,12 +65,11 @@ npm start
 
 Workflow обновляет каталог каждые 5 минут и при каждом push в код.
 
-### Локальная сборка для Pages
+### Обновить каталог вручную
 
 ```bash
 npm run fetch:drive
-npm run build:pages
-git add docs/ public/data/
+git add docs/data/files.json
 git commit -m "Update catalog"
 git push
 ```
@@ -78,11 +77,14 @@ git push
 ## Структура
 
 ```
-├── public/           # исходники фронтенда
-├── docs/             # сборка для GitHub Pages (генерируется)
-├── server.js         # сервер и API (локально / Render)
-├── apps-script/      # скрипт для Google Apps Script
-├── .env.example      # пример конфигурации
+├── docs/             # фронтенд (сайт + GitHub Pages)
+│   ├── index.html
+│   ├── css/
+│   ├── js/
+│   └── data/files.json
+├── server.js         # локальный сервер + API
+├── apps-script/
+├── .env.example
 └── package.json
 ```
 

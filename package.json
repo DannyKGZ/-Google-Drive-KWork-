@@ -6,7 +6,6 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node --watch server.js",
-    "build:pages": "node scripts/sync-docs.js",
     "fetch:drive": "node scripts/fetch-drive-json.js"
   },
   "dependencies": {

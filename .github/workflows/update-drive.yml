@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
     paths-ignore:
-      - 'docs/**'
+      - 'docs/data/files.json'
   schedule:
     - cron: '*/5 * * * *'
   workflow_dispatch:
@@ -25,16 +25,13 @@ jobs:
       - run: npm install
 
       - name: Fetch files from Google Drive
-        run: node scripts/fetch-drive-json.js
+        run: npm run fetch:drive
         env:
           GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
           GOOGLE_DRIVE_FOLDER_ID: ${{ secrets.GOOGLE_DRIVE_FOLDER_ID }}
 
-      - name: Build docs for GitHub Pages
-        run: npm run build:pages
-
-      - name: Commit updated docs
+      - name: Commit updated catalog
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: 'Update Drive catalog for GitHub Pages'
-          file_pattern: 'docs/** public/data/files.json'
+          commit_message: 'Update Drive catalog'
+          file_pattern: 'docs/data/files.json'
