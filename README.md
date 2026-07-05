@@ -1,4 +1,4 @@
-# Google Drive Portfolio
+# Google Drive KWork
 
 Тестовый проект для заказчика с [Kwork](https://kwork.ru).
 
