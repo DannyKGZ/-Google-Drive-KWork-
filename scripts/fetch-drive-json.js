@@ -33,7 +33,7 @@ function mapFile(file) {
 
 async function fetchDriveFiles() {
   if (!API_KEY) {
-    throw new Error('GOOGLE_API_KEY не задан');
+    return null;
   }
 
   const query = encodeURIComponent(`'${FOLDER_ID}' in parents and trashed=false`);
@@ -63,6 +63,11 @@ async function fetchDriveFiles() {
 async function main() {
   const outDir = path.join(__dirname, '..', 'docs', 'data');
   const outFile = path.join(outDir, 'files.json');
+
+  if (!API_KEY) {
+    console.log('GOOGLE_API_KEY не задан — пропуск обновления каталога');
+    process.exit(0);
+  }
 
   try {
     const payload = await fetchDriveFiles();

@@ -54,16 +54,20 @@ npm start
 
 На Pages нет Node-сервера — каталог файлов хранится в `data/files.json` и обновляется автоматически.
 
-### Настройка (один раз)
+### Автообновление каталога (опционально)
 
-1. GitHub → **Settings → Secrets and variables → Actions**
-2. Добавьте секреты:
-   - `GOOGLE_API_KEY` — API-ключ Google Drive
-   - `GOOGLE_DRIVE_FOLDER_ID` — ID папки (`15wuHWn4jrLgd7cfCf1JL5h9Qhu3EIGb6`)
-3. **Settings → Pages** → Branch: `main`, Folder: `/docs`
-4. Вкладка **Actions** → workflow **Update Drive catalog** → **Run workflow**
+Workflow **Update Drive catalog** обновляет `docs/data/files.json` из Google Drive.
 
-Workflow обновляет каталог каждые 5 минут и при каждом push в код.
+**Чтобы включить:**
+1. GitHub → **Settings → Secrets → Actions**
+2. Добавьте `GOOGLE_API_KEY` (и при необходимости `GOOGLE_DRIVE_FOLDER_ID`)
+3. **Actions** → **Update Drive catalog** → **Run workflow**
+
+Без секретов workflow **не запускается** — письма об ошибках не приходят.
+
+**Расписание:** раз в 6 часов (только если секрет задан).
+
+**Отключить уведомления:** GitHub → **Settings → Notifications** → снять галочку с Actions.
 
 ### Обновить каталог вручную
 

@@ -1,19 +1,16 @@
 name: Update Drive catalog
 
 on:
-  push:
-    branches: [main]
-    paths-ignore:
-      - 'docs/data/files.json'
-  schedule:
-    - cron: '*/5 * * * *'
   workflow_dispatch:
+  schedule:
+    - cron: '0 */6 * * *'
 
 permissions:
   contents: write
 
 jobs:
   update:
+    if: ${{ secrets.GOOGLE_API_KEY != '' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
